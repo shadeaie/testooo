@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yooo</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #1c1c1c, #4b0082);
+            color: #fca9e5;
+            text-align: center;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0); /* Make background transparent */
+            color: #fca9e5;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 5px #a64ac9;
+        }
+
+        .countdown {
+            font-size: 3em;
+            margin-top: 20px;
+            background: rgba(75, 0, 130, 0.8);
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px #a64ac9;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .button-container button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            background-color: #a64ac9;
+            color: #fca9e5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px #ff69b4;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 10px;
+            background: #4b0082;
+            color: #fca9e5;
+            font-size: 1em;
+            text-shadow: 1px 1px 3px #a64ac9;
+        }
+
+        /* New Background Image Style */
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .background-image {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            opacity: 0.7;
+            background-image: url('image.png'); /* Add your image URL here */
+            background-size: cover;
+            animation: moveHorizontal linear infinite;
+        }
+
+        /* Spread out the images more with unique positioning */
+        .background-image:nth-child(1) { top: 5%; left: -10%; animation-duration: 15s; }
+        .background-image:nth-child(2) { top: 15%; left: -20%; animation-duration: 18s; }
+        .background-image:nth-child(3) { top: 25%; left: -30%; animation-duration: 20s; }
+        .background-image:nth-child(4) { top: 35%; left: -40%; animation-duration: 22s; }
+        .background-image:nth-child(5) { top: 45%; left: -50%; animation-duration: 17s; }
+        .background-image:nth-child(6) { top: 55%; left: -60%; animation-duration: 16s; }
+        .background-image:nth-child(7) { top: 65%; left: -70%; animation-duration: 19s; }
+        .background-image:nth-child(8) { top: 75%; left: -80%; animation-duration: 21s; }
+        .background-image:nth-child(9) { top: 85%; left: -90%; animation-duration: 23s; }
+        .background-image:nth-child(10) { top: 10%; left: -100%; animation-duration: 24s; }
+        .background-image:nth-child(11) { top: 20%; left: -110%; animation-duration: 25s; }
+        .background-image:nth-child(12) { top: 30%; left: -120%; animation-duration: 26s; }
+        .background-image:nth-child(13) { top: 40%; left: -130%; animation-duration: 28s; }
+        .background-image:nth-child(14) { top: 50%; left: -140%; animation-duration: 30s; }
+        .background-image:nth-child(15) { top: 60%; left: -150%; animation-duration: 32s; }
+
+        /* Keyframe for infinite left-to-right movement */
+        @keyframes moveHorizontal {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(200vw); /* Moves the image completely off the screen */
+            }
+        }
+
+        /* Particle effect */
+        #particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        you're w8ing  <br>i'm w8ing <br>we're w8ing hh
+    </header>
+    <div class="countdown" id="countdown">
+        Loading countdown hh . . .
+    </div>
+    <div class="button-container" id="button-container">
+        <button onclick="redirectToContent()">Celebrate Now</button>
+    </div>
+
+    <canvas id="particles"></canvas>
+
+    <!-- New background images container -->
+    <div class="background-images">
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+        <div class="background-image"></div>
+    </div>
+
+    <div class="footer">
+        With love and mischief from me to this year!💀❤
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const maxParticles = 100;  // Maximum number of particles
+    
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    
+        function Particle(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 1;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.opacity = Math.random() * 0.5 + 0.2;
+        }
+    
+        Particle.prototype.update = function() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.opacity -= 0.01;
+    
+            if (this.opacity <= 0) {
+                // Reset particle
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+            }
+        };
+    
+        Particle.prototype.draw = function() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.fill();
+        };
+    
+        function createParticles() {
+            if (particles.length < maxParticles) {
+                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
+    
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+    
+            requestAnimationFrame(animateParticles);
+        }
+    
+        // Generate initial particles
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+        }
+    
+        animateParticles();
+    
+        // Set the target date for the countdown (e.g., New Year's Eve)
+        const targetDate = new Date("Jan 1, 2025 00:00:00").getTime();
+    
+        // Get the countdown element by its ID
+        const countdownElement = document.getElementById("countdown");
+        const buttonContainer = document.getElementById("button-container");
+    
+        // Update the countdown every second
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+    
+            // Calculate time components (days, hours, minutes, and seconds)
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+            // Display the countdown or a message if the target date has passed
+            if (distance < 0) {
+                countdownElement.innerHTML = "Happy New Year!";
+                buttonContainer.style.display = "block"; // Show the button when countdown ends
+            } else {
+                countdownElement.innerHTML = `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+            }
+        }
+    
+        // Update countdown every 1000ms (1 second)
+        setInterval(updateCountdown, 1000);
+    
+        function redirectToContent() {
+            window.location.href = "content.html";  // Redirect to content.html
+        }
+    </script>
+</body>
+</html>

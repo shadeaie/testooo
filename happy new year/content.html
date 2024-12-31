@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Happy New Year</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #4b0082, #1c1c1c);
+            color: #fca9e5;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Prevents scrollbars */
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2em; /* Title size */
+            text-shadow: 3px 3px 7px #a64ac9;
+            position: absolute;
+            top: 20px;
+            width: 100%;
+        }
+
+        .message-btn, .play-btn {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            background-color: #a64ac9;
+            color: #fca9e5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px #ff69b4;
+            margin-top: 20px; /* Space between buttons */
+            transition: all 0.5s ease-in-out; /* Button click effect */
+            opacity: 1; /* Initial visibility */
+        }
+
+        .message-btn:active, .play-btn:active {
+            transform: scale(0.9); /* Shrinks the button when clicked */
+        }
+
+        .message-btn {
+            display: none; /* Hide the message button initially */
+        }
+
+        .hidden {
+            opacity: 0; /* Hidden state for fade-out effect */
+            transform: translateY(20px); /* Slide down effect when hiding */
+        }
+
+        .visible {
+            opacity: 1; /* Visible state for fade-in effect */
+            transform: translateY(0); /* Reset position when showing */
+        }
+
+        .messages-box {
+            display: none; /* Hide the box initially */
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: 2px solid #fca9e5;
+            box-shadow: 0px 0px 20px rgba(255, 105, 180, 0.6);
+            color: #fca9e5;
+            text-align: center;
+            position: relative;
+            margin-top: 30px;
+            height: auto;
+            min-height: 50px;
+            overflow: hidden;
+        }
+
+        .hidden-message {
+            font-size: 1.5em;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            width: 100%;
+            transition: opacity 1s ease-in-out, visibility 0s 1s;
+        }
+
+        .hidden-message.show {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1s ease-in-out, visibility 0s 0s;
+        }
+
+        .hidden-message.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-out, visibility 0s 1s;
+        }
+
+        /* Firework background effect */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%);
+            border-radius: 50%;
+            animation: explode 1s ease-in-out forwards;
+            pointer-events: none; /* Makes sure the firework doesn't block other interactions */
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(10); opacity: 0; }
+        }
+
+        /* Firework rocket animation */
+        .rocket {
+            position: absolute;
+            width: 5px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            animation: launch 2s ease-in-out forwards, explode 1s ease-in-out 2s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes launch {
+            0% {
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 1;
+            }
+            100% {
+                bottom: 50%;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 1;
+            }
+        }
+
+        /* Explosions with multiple lines */
+        .explosion {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%);
+            border-radius: 50%;
+            animation: burst 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes burst {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .explosion-line {
+            position: absolute;
+            width: 2px;
+            height: 150px;
+            background-color: white;
+            transform-origin: 50%;
+            opacity: 0;
+            animation: line 1s ease-in-out forwards;
+        }
+
+        @keyframes line {
+            0% { transform: scaleY(0); opacity: 1; }
+            100% { transform: scaleY(1); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Add audio element -->
+    <audio id="background-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        <source src="your-music-file.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <h1 id="title">FRR HAPPY NEW YEAR <br>🎉🎉<br> 🎊🎊🎊🎊</h1>
+
+    <!-- Button to play the music -->
+    <button class="play-btn visible" id="play-btn" onclick="playMusic()">Play 🎶</button>
+
+    <!-- Button to reveal the message (hidden initially) -->
+    <button class="message-btn hidden" id="message-btn" onclick="revealMessage()">Message for U</button>
+
+    <!-- Box containing the hidden messages -->
+    <div class="messages-box" id="messages-container">
+        <p class="hidden-message" id="message1">I CAN'T HELP ...</p>
+        <p class="hidden-message" id="message2">FROM HERE ... </p>
+        <p class="hidden-message" id="message2"> ... </p>
+        <p class="hidden-message" id="message2">but ... </p>
+
+        <p class="hidden-message" id="message3">As 2024 fades into memories—some sweet, some bitter</p>
+        <!-- Add the rest of your messages here -->
+    </div>
+
+    <script>
+        function playMusic() {
+            const music = document.getElementById('background-music');
+            music.play(); // Start the music
+
+            // Firework animation
+            for (let i = 0; i < 7; i++) {
+                createFirework(i);
+            }
+
+            // Hide the play button with fade-out effect
+            const playButton = document.getElementById('play-btn');
+            playButton.classList.add('hidden');
+            setTimeout(() => playButton.style.display = 'none', 500); // Remove after fade-out
+
+            // Show the firework rocket animation
+            createRocket();
+
+            // Show the "Message for U" button after 7 seconds with fade-in effect
+            setTimeout(() => {
+                const messageButton = document.getElementById('message-btn');
+                messageButton.style.display = 'inline-block';
+                messageButton.classList.remove('hidden');
+                messageButton.classList.add('visible');
+            }, 7000); // 7 seconds delay
+        }
+
+        function createFirework(i) {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+
+            // Randomize color
+            const colors = ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#0000ff', '#800080', '#ff1493'];
+            firework.style.backgroundColor = colors[i % colors.length];
+
+            // Randomize position
+            const size = Math.random() * 50 + 20; // Random size between 20 and 70px
+            const left = Math.random() * 100; // Random horizontal position
+            const top = Math.random() * 100;  // Random vertical position
+
+            firework.style.width = `${size}px`;
+            firework.style.height = `${size}px`;
+            firework.style.left = `${left}%`;
+            firework.style.top = `${top}%`;
+
+            document.body.appendChild(firework);
+
+            // Remove firework after animation
+            setTimeout(() => {
+                firework.remove();
+            }, 1000); // 1 second after firework starts
+        }
+
+        function createRocket() {
+            const rocket = document.createElement('div');
+            rocket.classList.add('rocket');
+            document.body.appendChild(rocket);
+
+            // Remove the rocket after explosion
+            setTimeout(() => {
+                rocket.remove();
+                // Create explosion effect in the center
+                createExplosion();
+            }, 3000); // Rocket will explode after 3 seconds
+        }
+
+        function createExplosion() {
+            for (let i = 0; i < 7; i++) {
+                const explosion = document.createElement('div');
+                explosion.classList.add('explosion');
+                explosion.style.left = '50%';
+                explosion.style.top = '50%';
+                explosion.style.transform = 'translate(-50%, -50%)';
+                document.body.appendChild(explosion);
+
+                // Lines effect (like real firework explosion)
+                createExplosionLines(i);
+            }
+
+            // Remove explosions after animation
+            setTimeout(() => {
+                document.querySelectorAll('.explosion').forEach(explosion => explosion.remove());
+            }, 1000); // Explosion effect lasts 1 second
+        }
+
+        function createExplosionLines(i) {
+            const lineCount = 10;
+            const angleStep = 360 / lineCount;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            for (let j = 0; j < lineCount; j++) {
+                const angle = angleStep * j;
+                const line = document.createElement('div');
+                line.classList.add('explosion-line');
+
+                // Randomize color for each line
+                const colors = ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#0000ff', '#800080', '#ff1493'];
+                line.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                const transformOrigin = `${centerX}px ${centerY}px`;
+                line.style.transformOrigin = transformOrigin;
+                line.style.transform = `rotate(${angle}deg)`;
+
+                document.body.appendChild(line);
+
+                setTimeout(() => {
+                    line.remove();
+                }, 1000);
+            }
+        }
+
+        function revealMessage() {
+            // Show the message box and hide the button
+            const messageBox = document.querySelector('.messages-box');
+            messageBox.style.display = 'block';
+            document.querySelector('.message-btn').style.display = 'none';
+
+            // Show and animate the hidden messages one by one
+            const messages = document.querySelectorAll('.hidden-message');
+            let currentMessage = 0;
+
+            function showNextMessage() {
+                if (currentMessage < messages.length) {
+                    const message = messages[currentMessage];
+                    message.style.visibility = 'visible';
+                    message.classList.add('show');
+                    setTimeout(() => {
+                        message.classList.remove('show');
+                        message.classList.add('fade-out');
+                        setTimeout(() => {
+                            message.style.visibility = 'hidden';
+                            message.classList.remove('fade-out');
+                            currentMessage++;
+                            showNextMessage(); // Show the next message
+                        }, 1000);
+                    }, 2000);
+                }
+            }
+
+            showNextMessage(); // Start the sequence
+        }
+    </script>
+</body>
+</html>
